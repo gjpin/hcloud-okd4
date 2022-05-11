@@ -40,14 +40,14 @@ resource "hcloud_firewall" "okd-base" {
       port            = "10256"
       source_ips      = [for s in concat(module.master.ipv4_addresses, module.worker.ipv4_addresses, module.bootstrap.ipv4_addresses) : "${s}/32"]
   }
-  # VXLAN and Geneve
+  # VXLAN
   rule {
       direction       = "in"
       protocol        = "udp"
       port            = "4789"
       source_ips      = [for s in concat(module.master.ipv4_addresses, module.worker.ipv4_addresses, module.bootstrap.ipv4_addresses) : "${s}/32"]
   }
-  # VXLAN and Geneve
+  # Geneve
   rule {
       direction       = "in"
       protocol        = "udp"
@@ -59,6 +59,20 @@ resource "hcloud_firewall" "okd-base" {
       direction       = "in"
       protocol        = "udp"
       port            = "9000-9999"
+      source_ips      = [for s in concat(module.master.ipv4_addresses, module.worker.ipv4_addresses, module.bootstrap.ipv4_addresses) : "${s}/32"]
+  }
+  # IPsec IKE packets
+  rule {
+      direction       = "in"
+      protocol        = "udp"
+      port            = "500"
+      source_ips      = [for s in concat(module.master.ipv4_addresses, module.worker.ipv4_addresses, module.bootstrap.ipv4_addresses) : "${s}/32"]
+  }
+  # IPsec NAT-T packets
+  rule {
+      direction       = "in"
+      protocol        = "udp"
+      port            = "4500"
       source_ips      = [for s in concat(module.master.ipv4_addresses, module.worker.ipv4_addresses, module.bootstrap.ipv4_addresses) : "${s}/32"]
   }
   # Kubernetes node port

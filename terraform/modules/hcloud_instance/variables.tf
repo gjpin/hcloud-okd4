@@ -44,7 +44,7 @@ variable "user_data" {
 variable "ssh_keys" {
   type        = list(any)
   description = "SSH key IDs or names which should be injected into the server at creation time"
-  default     = []
+  default     = ["default"] # populated to avoid hetzner server creation emails
 }
 
 variable "keep_disk" {

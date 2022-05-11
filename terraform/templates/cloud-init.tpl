@@ -48,7 +48,3 @@ runcmd:
   - "touch /etc/cloud-init.done"
 
 final_message: "The system is finally up, after $UPTIME seconds"
-
-#phone_home:
-# url: http://my.example.com/$INSTANCE_ID/
-# post: [ pub_key_dsa, pub_key_rsa, pub_key_ecdsa, instance_id ]

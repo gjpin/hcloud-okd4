@@ -2,7 +2,7 @@
 - name: wait until ssh is available on all nodes
   hosts:
     - ignition
-    - haproxy
+    # - haproxy
   gather_facts: no
   tasks:
     - name: wait until ssh is available

@@ -13,14 +13,24 @@ Because of that OpenShift on hcloud is only suitable for small test environments
 
 ## Architecture
 
-The deployment defaults to a single node cluster.
+The deployment defaults to a 5 node cluster:
 
-- 1x Master Node (CX41)
+- 3x Master Nodes (CX41)
+- 2x Worker Nodes (CX41)
 - 1x Loadbalancer (LB11)
 - 1x Bootstrap Node (CX41) - deleted after cluster bootstrap
 - 1x Ignition Node (CX11) - deleted after cluster bootstrap
 
 ## Usage
+
+### Set Version
+
+Set a target version of use the targets `latest_version` and `latest_coreos_version` to fetch the latest available version.
+
+```
+export OPENSHIFT_RELEASE=$(make latest_version)
+export COREOS_RELEASE=$(make latest_coreos_version)
+```
 
 ### Build toolbox
 
@@ -31,8 +41,6 @@ make fetch
 make build
 ```
 
-If you do not want to build the container by your own, it is also available on [quay.io](https://quay.io/repository/slauger/hcloud-okd4).
-
 ### Run toolbox
 
 Use the following command to start the container.
@@ -41,7 +49,7 @@ Use the following command to start the container.
 make run
 ```
 
-All the following commands will be executed inside the container. 
+All the following commands will be executed inside the container:
 
 ### Set Version
 
@@ -57,9 +65,9 @@ export COREOS_RELEASE=$(make latest_coreos_version)
 ```
 ---
 apiVersion: v1
-baseDomain: 'example.com'
+baseDomain: example.com
 metadata:
-  name: 'okd4'
+  name: okd4
 compute:
 - hyperthreading: Enabled
   name: worker
@@ -67,18 +75,17 @@ compute:
 controlPlane:
   hyperthreading: Enabled
   name: master
-  replicas: 1
+  replicas: 3
 networking:
   clusterNetworks:
   - cidr: 10.128.0.0/14
     hostPrefix: 23
-  networkType: OpenShiftSDN
+  networkType: OVNKubernetes
   serviceNetwork:
   - 172.30.0.0/16
-  machineCIDR:
 platform:
   none: {}
-pullSecret: '{"auths":{"none":{"auth": "none"}}}'
+pullSecret: '{"auths":{"fake":{"auth":"aWQ6cGFzcwo="}}}'
 sshKey: ssh-rsa AABBCC... Some_Service_User
 ```
 
@@ -86,6 +93,11 @@ sshKey: ssh-rsa AABBCC... Some_Service_User
 
 ```
 make generate_manifests
+```
+
+### Disable scheduling on control planes (optional, but recommended)
+```
+sed -i 's#mastersSchedulable: true#mastersSchedulable: false#' ./config/manifests/cluster-scheduler-02-config.yml
 ```
 
 ### Create ignition config
@@ -203,6 +215,9 @@ Note: This will keep hosts pingable, but isolate them complete from the internet
 
 Checkout [this issue](https://github.com/slauger/hcloud-okd4/issues/176) to get details about how to obtain an API token for the Cloudflare API.
 
-## Author
+## Multi-tenancy networking with OVN-Kubernetes
+See [Configuring multitenant isolation with network policy](https://docs.openshift.com/container-platform/4.10/networking/network_policy/multitenant-network-policy.html).
+
+## Original author
 
 - [slauger](https://github.com/slauger)
