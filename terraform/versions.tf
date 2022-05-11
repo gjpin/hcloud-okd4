@@ -2,11 +2,11 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "2.14.0"
+      version = "3.14.0"
     }
     hcloud = {
       source  = "hetznercloud/hcloud"
-      version = "1.27.2"
+      version = "1.33.2"
     }
     template = {
       source  = "hashicorp/template"
@@ -14,11 +14,11 @@ terraform {
     }
     local = {
       source  = "hashicorp/local"
-      version = "1.4.0"
+      version = "2.2.2"
     }
     random = {
       source  = "hashicorp/random"
-      version = "2.3.1"
+      version = "3.1.3"
     }
   }
   required_version = ">= 0.14"

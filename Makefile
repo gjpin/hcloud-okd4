@@ -5,16 +5,14 @@ OPENSHIFT_MIRROR?=https://mirror.openshift.com/pub/openshift-v4
 DEPLOYMENT_TYPE?=okd
 
 FCOS_STREAM?=stable
-OCP_RELEASE_CHANNEL?=stable-4.7
+OCP_RELEASE_CHANNEL?=stable-4.10
 
 OPENSHIFT_RELEASE?=none
 COREOS_RELEASE?=none
 COREOS_RELEASE_MINOR=$(shell echo $(COREOS_RELEASE) | egrep -o 4\.[0-9]+)
 
-CONTAINER_NAME?=quay.io/slauger/hcloud-okd4
+CONTAINER_NAME?=docker.io/gjpin/hcloud-okd4
 CONTAINER_TAG?=$(OPENSHIFT_RELEASE)
-
-#DEPLOYMENT_TYPE?=okd
 
 BOOTSTRAP?=false
 MODE?=apply
@@ -68,19 +66,19 @@ fetch_ocp:
 
 .PHONY: build
 build:
-	docker build --build-arg OPENSHIFT_RELEASE=$(OPENSHIFT_RELEASE) -t $(CONTAINER_NAME):$(CONTAINER_TAG) .
+	podman build --build-arg OPENSHIFT_RELEASE=$(OPENSHIFT_RELEASE) -t $(CONTAINER_NAME):$(CONTAINER_TAG) .
 
-.PHONY: test
-test:
-	docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(shell pwd):/src:ro gcr.io/gcp-runtimes/container-structure-test:latest test --image $(CONTAINER_NAME):$(CONTAINER_TAG) --config /src/tests/image.tests.yaml
+# .PHONY: test
+# test:
+# 	docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(shell pwd):/src:ro gcr.io/gcp-runtimes/container-structure-test:latest test --image $(CONTAINER_NAME):$(CONTAINER_TAG) --config /src/tests/image.tests.yaml
 
 .PHONY: push
 push:
-	docker push $(CONTAINER_NAME):$(CONTAINER_TAG)
+	podman push $(CONTAINER_NAME):$(CONTAINER_TAG)
 
 .PHONY: run
 run:
-	docker run -it --hostname openshift-toolbox --mount type=bind,source="$(shell pwd)",target=/workspace --mount type=bind,source="$(HOME)/.ssh,target=/root/.ssh" $(CONTAINER_NAME):$(CONTAINER_TAG) /bin/bash
+	podman run -it --hostname openshift-toolbox -v "$(shell pwd)":/workspace:Z -v "$(HOME)"/.ssh:/root/.ssh:Z $(CONTAINER_NAME):$(CONTAINER_TAG) /bin/bash
 
 .PHONY: generate_manifests
 generate_manifests:
