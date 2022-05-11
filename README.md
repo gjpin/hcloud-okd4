@@ -105,8 +105,11 @@ export TF_VAR_dns_zone_id=14758f1afd44c09b7992073ccf00b43d
 export HCLOUD_TOKEN=14758f1afd44c09b7992073ccf00b43d14758f1afd44c09b7992073ccf00b43d
 
 # credentials for cloudflare
+# https://dash.cloudflare.com/profile/api-tokens
+# create token -> get started (create custom token) -> https://mktg-content-api-hashicorp.vercel.app/api/assets?product=tutorials&version=main&asset=public%2Fimg%2Fterraform%2Fuse-cases%2Fcloudflare-static-website%2Fcustom-api-token-settings.png
 export CLOUDFLARE_EMAIL=user@example.com
-export CLOUDFLARE_API_KEY=14758f1afd44c09b7992073ccf00b43d
+export CLOUDFLARE_API_KEY=cloudflare_global_api_key
+export CLOUDFLARE_API_TOKEN=cloudflare_api_token
 ```
 
 ### Create Fedora CoreOS image

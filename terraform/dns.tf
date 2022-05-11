@@ -54,7 +54,7 @@ resource "cloudflare_record" "dns_srv_etcd" {
   name    = "_etcd-server-ssl._tcp.${var.dns_domain}"
   type    = "SRV"
 
-  data = {
+  data {
     service  = "_etcd-server-ssl"
     proto    = "_tcp"
     name     = "_etcd-server-ssl._tcp.${var.dns_domain}"

@@ -11,6 +11,14 @@ resource "hcloud_load_balancer" "lb" {
   }
 }
 
+# resource "hcloud_load_balancer_target" "lb_target" {
+#   for_each = concat(module.master.server_ids, module.worker.server_ids, module.bootstrap.server_ids)
+
+#   load_balancer_id = hcloud_load_balancer.lb.id
+#   type             = "server"
+#   server_id        = each.value.id
+# }
+
 resource "hcloud_load_balancer_network" "lb_network" {
   load_balancer_id = hcloud_load_balancer.lb.id
   subnet_id        = hcloud_network_subnet.lb_subnet.id
