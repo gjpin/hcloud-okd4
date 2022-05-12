@@ -95,11 +95,6 @@ sshKey: ssh-rsa AABBCC... Some_Service_User
 make generate_manifests
 ```
 
-### Disable scheduling on control planes (optional, but recommended)
-```
-sed -i 's#mastersSchedulable: true#mastersSchedulable: false#' ./config/manifests/cluster-scheduler-02-config.yml
-```
-
 ### Create ignition config
 
 ```

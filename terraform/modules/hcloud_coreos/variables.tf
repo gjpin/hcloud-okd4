@@ -114,5 +114,5 @@ variable "image_name" {
 variable "ignition_version" {
   type        = string
   description = "Ignition Version"
-  default     = "3.0.0"
+  default     = "3.2.0"
 }
