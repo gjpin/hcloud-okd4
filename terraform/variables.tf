@@ -1,6 +1,6 @@
 variable "replicas_master" {
   type        = number
-  default     = 3
+  default     = 1
   description = "Count of master replicas"
 }
 
